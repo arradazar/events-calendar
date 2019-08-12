@@ -16,33 +16,10 @@ Vue.use(require('vue-moment'));
 import Toasted from 'vue-toasted';
 Vue.use(Toasted)
 
-const routes = [
-    // {
-    //     name: 'home',
-    //     path: '/',
-    //     component: CalendarForm
-    // },
-    // {
-    //     name: 'create',
-    //     path: '/create',
-    //     component: CreateComponent
-    // },
-    // {
-    //     name: 'posts',
-    //     path: '/posts',
-    //     component: IndexComponent
-    // },
-    // {
-    //     name: 'edit',
-    //     path: '/edit/:id',
-    //     component: EditComponent
-    // }
-];
-import App from './components/App.vue';
+import App from './App.vue';
 
 const router = new VueRouter({
-    mode: 'history',
-    routes: routes
+    mode: 'history'
 })
   
 const app = new Vue({

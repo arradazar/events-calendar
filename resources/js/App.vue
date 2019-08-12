@@ -11,9 +11,7 @@
                         <calendar-form @inputData="getEvent"></calendar-form>
                     </div>
                     <div class="col-lg-8">
-                        <div class="col-lg-12" v-for="n in monthCnt">
-                            <events :event="createdEvent"></events>
-                        </div>
+                        <events :event="createdEvent"></events>
                     </div>
                     
                 </div>
@@ -22,15 +20,14 @@
     </div>
 </template>
 <script>
-    import CalendarForm from './CalendarForm.vue';
-    import Events from './Events.vue';
+    import CalendarForm from './components/CalendarForm.vue';
+    import Events from './components/Events.vue';
     import moment from 'moment'
 
     export default {
         name: "App",
         mounted() {
             console.log('Vue App mounted.');
-            this.monthCnt = 1;
 
         },
         data: function() {
@@ -46,10 +43,6 @@
         methods: {
             getEvent(event) {
                 this.createdEvent= event;
-
-                let monthFrom = (moment(this.createdEvent.from).month()) + 1;
-                let monthTo = (moment(this.createdEvent.to).month()) + 1;
-                this.monthCnt = (monthTo - monthFrom);
             },
         }
     }

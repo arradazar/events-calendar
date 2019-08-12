@@ -1,26 +1,26 @@
 <template>
-        <div class="calendar-view-wrap">
-            <div class="month-bg">
-                <label>{{ createdEvent.from | moment("MMMM") }} {{ createdEvent.from | moment("YYYY") }}</label>
-            </div>
-            <div class="day-view-wrap">
-                <div class="row event-wrap" v-bind:class="{ showEvent: date.showEvent }" v-for="date in dates">
-                    <div class="col-lg-1" style="text-align: center;">
-                        <div class="day">
-                            {{ date.value | moment("ddd") }}
-                        </div>
-                        <div class="day-value">
-                            {{ date.value | moment("D") }}
-                        </div>
+    <div class="calendar-view-wrap">
+        <div class="month-bg">
+            <label>{{ createdEvent.from | moment("MMMM") }} {{ createdEvent.from | moment("YYYY") }}</label>
+        </div>
+        <div class="day-view-wrap">
+            <div class="row event-wrap" v-bind:class="{ showEvent: date.showEvent }" v-for="date in dates">
+                <div class="col-lg-1" style="text-align: center;">
+                    <div class="day">
+                        {{ date.value | moment("ddd") }}
                     </div>
-                    <div class="col-lg-11" v-if="date.showEvent" style="padding-left: 0;">
-                        <div class="event-card event-card-wrap">
-                            <div class="title">{{ date.title }}</div>
-                        </div>
+                    <div class="day-value">
+                        {{ date.value | moment("D") }}
+                    </div>
+                </div>
+                <div class="col-lg-11" v-if="date.showEvent" style="padding-left: 0;">
+                    <div class="event-card event-card-wrap">
+                        <div class="title">{{ date.title }}</div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
 </template>
 <script>
     function Event({ id, title, from, to, day}) {
@@ -59,52 +59,51 @@
                 // reset event list
                 this.dates=[];
 
-                let monthFrom = (moment(this.createdEvent.from).month()) + 1;
-                let monthTo = (moment(this.createdEvent.to).month()) + 1;
-                    let day_from = moment(this.createdEvent.from).format('DD');
-                    let day_to = moment(this.createdEvent.to).format('DD');
-                    let month = moment(this.createdEvent.from).format('MM');
-                    let year = moment(this.createdEvent.from).format('YYYY');
-                    let monthYear = moment(this.createdEvent.from).format('MM-YYYY');
-                    let totalDays = moment(monthYear, "MM-YYYY").daysInMonth();
+                let day_from = moment(this.createdEvent.from).format('DD');
+                let day_to = moment(this.createdEvent.to).format('DD');
+                let month = moment(this.createdEvent.from).format('MM');
+                let year = moment(this.createdEvent.from).format('YYYY');
+                let monthYear = moment(this.createdEvent.from).format('MM-YYYY');
+                let totalDays = moment(monthYear, "MM-YYYY").daysInMonth();
 
-                    var weekList = [];
-                    if(this.createdEvent.day){
-                        weekList = this.createdEvent.day.split(',');
-                    }
+                var weekList = [];
+                if(this.createdEvent.day){
+                    weekList = this.createdEvent.day.split(',');
+                }
 
-                    //get dates in a month
-                    for (let day = 1; day <= totalDays; day++) {
-                        let formDate = moment((year+"-"+month+"-"+day), "YYYY-MM-DD");
-                        //when to show event
-                        var showEvent = 0;
-                        if((day >= day_from) && (day <= day_to)) {
-                            if(weekList.length > 0) {
-                                weekList.forEach(function(element) {
-                                    let dayOfWeek = (moment(formDate).format('dddd')).toLowerCase();
-                                    if(element === dayOfWeek) {
-                                        showEvent = 1;
-                                    }
-                                });
-                            }
-                            else {
-                                showEvent = 1;
-                            }
+                //get dates in a month
+                for (let day = 1; day <= totalDays; day++) {
+                    let formDate = moment((year+"-"+month+"-"+day), "YYYY-MM-DD");
+                    //when to show event
+                    var showEvent = 0;
+                    if((day >= day_from) && (day <= day_to)) {
+                        if(weekList.length > 0) {
+                            weekList.forEach(function(element) {
+                                let dayOfWeek = (moment(formDate).format('dddd')).toLowerCase();
+                                if(element === dayOfWeek) {
+                                    showEvent = 1;
+                                }
+                            });
                         }
-
-                        this.dates.push(
-                            {
-                                'value': formDate,
-                                'showEvent': showEvent,
-                                'title': this.createdEvent.title
-                            }
-                        );
+                        else {
+                            showEvent = 1;
+                        }
                     }
+
+                    this.dates.push(
+                        {
+                            'value': formDate,
+                            'showEvent': showEvent,
+                            'title': this.createdEvent.title
+                        }
+                    );
+                }
             },
             setDefault() {
                 var currentDate = new Date();
-                this.createdEvent.from = currentDate;
-                this.createdEvent.to = currentDate;
+                
+                this.createdEvent.from = moment(currentDate).format('YYYY-MM-DD');
+                this.createdEvent.to = moment(currentDate).format('YYYY-MM-DD');
                 this.createdEvent.day = ' ';
                 this.dates = [];
             }
